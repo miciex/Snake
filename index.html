@@ -8,11 +8,145 @@
     <style>
         body{
             background-color: black;
+            display: flex;
+            justify-content: center;
         }
+        h1{
+            font-size: 3vh;
+            color: black;
+        }
+        p{
+            margin: 0;
+        }
+        #wrapperSnake{
+            width: 80vh;
+            height: 80vh;
+            display: flex;
+            position: absolute;
+            z-index: 2;
+        }
+        #wrapperBoard{
+            width: 80vh;
+            height: 80vh;
+            display: none;
+            position: absolute;
+            z-index: 1;
+        }
+        #wrapperBig{
+            width: 80vh;
+            height: 80vh;
+            display: none;
+            position: absolute;
+            z-index: 1;
+        }
+        .text{
+            height: 4vh;
+            width: 80vh;
+            position: absolute;
+            z-index: 100;
+            margin-top: 1vh;
+            text-align: center;
+        }
+        .container{
+            width: 80vh;
+            height: 72vh;
+            background-color: aliceblue;
+            position: absolute;
+            display: flex;
+            align-items: center;
+        }
+        .container>*{
+            flex: 1 1 100%;
+            flex-wrap: wrap;
+        }
+        .rect{
+            width: 20vh ;
+            height: 60vh;
+            margin-right: 2vh;
+            margin-left: 2vh;
+        }
+        #snake1{
+            background-color: white;
+        }
+        #snake2{
+            background-color: yellowgreen;
+        }
+        #snake3{
+            background-color: lightskyblue;
+        }
+        #boardColor1{
+           background-color: violet;
+        }
+        #boardColor2{
+            background-color: darkblue;
+        }
+        #boardColor3{
+            background-color: darkgray;
+        }
+        #boardBig1{
+           background-color: violet;
+        }
+        #boardBig2{
+            background-color: darkblue;
+        }
+        #boardBig3{
+            background-color: darkgray;
+        }
+        .containerB{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 80vh;
+            height: 20vh;
+            background-color: white;
+        }
+        #boardBi{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+
+        }
+        #range{
+            height: 20px;
+            width: 80%;
+            margin-left: 10vh;
+            margin-right: 10vh;
+        }
+       #submit{
+           height: 100px;
+           min-width: 100px;
+           font-size: 2rem;
+       }
     </style>
 </head>
 <body>
-    <canvas width="1000" height="1000" id="canvas"></canvas>
+    <canvas   id="canvas"></canvas>
+    <div id="wrapperSnake">
+        <div class="text"><p><h1>Kliknij, aby wybrać kolor węzyka, albo uzyj strzałek i entera</h1></p></div>
+        <div class="container">
+            <div class="rect" id="snake1"></div>
+            <div class="rect" id="snake2"></div>
+            <div class="rect" id="snake3"></div>            
+        </div>
+    </div>
+        <div id="wrapperBoard">
+            <div class="text"><p><h1>Kliknij, aby wybrać kolor węzyka, albo uzyj strzałek i entera</h1></p></div>
+            <div class="container">
+                <div class="rect" id="boardColor1"></div>
+                <div class="rect" id="boardColor2"></div>
+                <div class="rect" id="boardColor3"></div>            
+            </div>
+    </div>
+    <div id="wrapperBig">
+        <div class="text"><p><h1>Kliknij, aby wybrać kolor węzyka, albo uzyj strzałek i entera</h1></p></div>
+        <div class="containerB">
+            <div  id="boardBi"><input type="range" min="10" max="20" id="range"><input type="submit" value="potwierdź" id="submit"></div>          
+        </div>
+</div>
+    
     <script src="script.js"></script>
 </body>
 </html>

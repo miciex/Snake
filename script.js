@@ -1,3 +1,15 @@
+var snake1 = document.querySelector('#snake1')
+var snake2 = document.querySelector('#snake2')
+var snake3 = document.querySelector('#snake3')
+var snakeC = document.querySelector('#wrapperSnake')
+var boardC1 = document.querySelector('#boardColor1')
+var boardC2 = document.querySelector('#boardColor2')
+var boardC3 = document.querySelector('#boardColor3')
+var boardC = document.querySelector('#wrapperBoard')
+var boardB = document.querySelector('#wrapperBig')
+var rangeB = document.querySelector('#range')
+var submitB = document.querySelector('#submit')
+var start = false;
 var element =[];
 var canvas = document.querySelector('#canvas');
 var canvasContext = canvas.getContext('2d');
@@ -13,6 +25,23 @@ var block = 0;
 var fruit;
 var points = 0;
 var wherefruit = [];
+var snakeColorTab=['white', 'yellowgreen', 'lightskyblue'];
+var snakeColor;
+var boardColorTab=['darkblue', 'violet', 'darkgrey'];
+var boardColor;
+var boardsize;
+
+t=0
+
+
+snake1.addEventListener('click',()=>{snakeColor = 'white'; snakeC.remove(); boardC.style.display = "flex"})
+snake2.addEventListener('click',()=>{snakeColor = 'yellowgreen'; snakeC.remove(); boardC.style.display = "flex";})
+snake3.addEventListener('click',()=>{snakeColor = 'lightskyblue'; snakeC.remove(); boardC.style.display = "flex";})
+boardC1.addEventListener('click',()=>{boardColor = 'violet'; boardC.remove(); boardB.style.display = "flex"})
+boardC2.addEventListener('click',()=>{boardColor = 'darkblue'; boardC.remove(); boardB.style.display = "flex"})
+boardC3.addEventListener('click',()=>{boardColor = 'darkgray'; boardC.remove(); boardB.style.display = "flex"})
+submitB.addEventListener('click', ()=>{boardsize = parseInt(rangeB.value);boardB.remove();canvas.width = boardsize*100; canvas.height = boardsize*100;start = true;})
+
 
 function calculateMousePos(evt){
     var rect = canvas.getBoundingClientRect();
@@ -37,12 +66,13 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
-window.onload  = function(){
-    
-    var framesperSecond = 30;
-    board()
-    setInterval(()=>{;showElements();}, 300);
-}
+    window.onload  = function(){    
+        var framesperSecond = 10;
+        
+            
+            setInterval(()=>{board();showElements();console.log('fr')}, 1000/framesperSecond);
+        }  
+
 
 function Rect(x, y, width, height, color){
     this.x = x;
@@ -57,22 +87,25 @@ function Rect(x, y, width, height, color){
 }
 
 function board(){
-    for(let i = 0; i<10; i++){
-        for(let j = 0; j<10; j++){
-            var n = new Rect(i*100+1, j*100+1, 98, 98, 'violet')
+if(start&&t==0&&boardsize>9){
+    for(let i = 0; i<boardsize; i++){
+        for(let j = 0; j<boardsize; j++){
+            var n = new Rect(i*100+1, j*100+1, 98, 98, boardColor)
             n.draw();
+            t++;
         } 
     }
 }
+}
 
 function addElement(x, y,n){
-    element.push(new Rect(x, y, elementWidth, elementHeight, 'white'));
+    element.push(new Rect(x, y, elementWidth, elementHeight, snakeColor));
     element[n].draw();
     
 }
 
 function addElementToMove(x, y){
-    element.unshift(new Rect(x, y, elementWidth, elementHeight, 'white'));
+    element.unshift(new Rect(x, y, elementWidth, elementHeight, snakeColor));
     
 }
 
@@ -83,17 +116,22 @@ function showElementToMove(x,y,n){
 
 function removeLastElement(){
     canvasContext.clearRect(element[element.length-1].x,element[element.length-1].y, elementWidth,elementHeight)
-    var bg =new Rect(element[element.length-1].x,element[element.length-1].y, 98,98, 'violet');
+    var bg =new Rect(element[element.length-1].x,element[element.length-1].y, 98,98, boardColor);
     bg.draw();
     element.pop();
     
 }
 
 function showElements(){
+    if(start==true){
     if(element.length<countElements&&block==0){
     for(let i = 0; i<=countElements; i++){
         if(element.length==0){
             addElement(BasedX, BasedY, i);
+            var eye1 = new Rect(element[0].x+70, element[0].y+10,10,10,'black')
+            var eye2 = new Rect(element[0].x+70, element[0].y+80,10,10,'black')
+            eye1.draw()
+            eye2.draw()
         }
         else{
             addElement(element[element.length-1].x-100, element[element.length-1].y, i)
@@ -103,6 +141,7 @@ function showElements(){
     block++;
 }
     moveElements();
+}
 }   
 
 function moveElements(){
@@ -116,12 +155,27 @@ function moveElements(){
         console.log(element[0]);
         showElementToMove(element[0].x+100, element[0].y, 0)
         grow();
+        var eye1 = new Rect(element[0].x+70, element[0].y+10,10,10,'black')
+        var eye2 = new Rect(element[0].x+70, element[0].y+80,10,10,'black')
+        eye1.draw()
+        eye2.draw()
+        for(i = 1; i<element.length; i++){
+            element[i].draw()
+        }
+        
     }
     if(where==37){
         removeLastElement()
         console.log(element[0]);
         showElementToMove(element[0].x-100, element[0].y, 0)
         grow();
+        var eye1 = new Rect(element[0].x+30, element[0].y+10,10,10,'black')
+        var eye2 = new Rect(element[0].x+30, element[0].y+80,10,10,'black')
+        eye1.draw()
+        eye2.draw()
+        for(i = 1; i<element.length; i++){
+            element[i].draw()
+        }
         
     }
     if(where==38){
@@ -129,13 +183,26 @@ function moveElements(){
         console.log(element[0]);
         showElementToMove(element[0].x, element[0].y-100, 0)
         grow();
-        
+        var eye1 = new Rect(element[0].x+10, element[0].y+20,10,10,'black')
+        var eye2 = new Rect(element[0].x+80, element[0].y+20,10,10,'black')
+        eye1.draw()
+        eye2.draw()
+        for(i = 1; i<element.length; i++){
+            element[i].draw()
+        }
     }
     if(where==40){
         removeLastElement()
         console.log(element[0]);
         showElementToMove(element[0].x, element[0].y+100, 0)
         grow();
+        var eye1 = new Rect(element[0].x+10, element[0].y+80,10,10,'black')
+        var eye2 = new Rect(element[0].x+80, element[0].y+80,10,10,'black')
+        eye1.draw()
+        eye2.draw();
+        for(i = 1; i<element.length; i++){
+            element[i].draw()
+        }
     }
    
     
@@ -186,7 +253,7 @@ function addFruit(){
 function deleteFruit(){
     fruit = "";
     canvasContext.clearRect(element[element.length-1].x,element[element.length-1].y, elementWidth,elementHeight);
-    var bg =new Rect(element[0].x,element[0].y, 98,98, 'violet');
+    var bg =new Rect(element[0].x,element[0].y, 98,98, boardColor);
     bg.draw();
 }
 
@@ -204,7 +271,7 @@ function grow(x,y){
         deleteFruit();
         addFruit();
         points++;
-        console.log(points)
+        //console.log(points)
         addElement(element[element.length-1].x, element[element.length-1].y, element.length-1)
         for(segment in element){
             element[segment].draw();
@@ -250,3 +317,7 @@ function showGameOverScreen(){
     playAgain(375, 500);
     canvas.addEventListener('mousedown', handleMouseClick)
 }
+
+// function chooseSnakeColor(){
+
+// }
